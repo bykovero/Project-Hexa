@@ -1,3 +1,4 @@
+// Fun Code to make the hexa-robot "dance" (body left - body right - legs up - legs down)
 #include <HardwareSerial.h>
 
 #define RX_PIN 44
