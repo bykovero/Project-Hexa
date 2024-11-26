@@ -3,16 +3,16 @@
 #define RX_PIN 44
 #define TX_PIN 43
 
-/* HEXA Layout
+/* HEXA Leg - Layout
  *  
  *   4 3
  *  5 o 2
  *   6 1
  *   
- *   Netzteil Einstellungen: 5V 2A
+ *   Minimum Amperage Needed: 3A
  */
 
-// declare Hexa Motors for easier use
+// declare Hexa Motor Pins on Motor Driver
 int leg1_body = 26;
 int leg1_middle = 25;
 int leg1_foot = 24;
@@ -36,8 +36,6 @@ int leg5_foot = 5;
 int leg6_body = 10;
 int leg6_middle = 9;
 int leg6_foot = 8;
-
-// declare Motor Groups for Alternating tripod
 
 void setup() {
   // put your setup code here, to run once:
@@ -67,14 +65,17 @@ void setup() {
   moveMotorCommand(leg6_foot, 1400, 1000, 0);
   
   commitMoveMotorCommands();
+  
   delay(3000);
 }
+
+//Function to transmit Commands from ESP32 to Motor Driver over Serial
 
 // ch = channel, pw = pulse width, spd = movement speed in microseconds per second,
 // tm = time (microsec) to travel from current position to the desired position
 // for single motor move choose either spd or tm
 // for multi motor move choose either spd or tm for each motor
-// do not forget to send a carriage return ("<cr") to execute movements
+// do not forget to send a carriage return ("<cr>") to execute movements
 void moveMotorCommand(int ch, int pw, int spd, int tm){
 
   int body_pw_min = 1200;
@@ -104,9 +105,11 @@ void moveMotorCommand(int ch, int pw, int spd, int tm){
   }
 }
 
+// Function to "commit/execute" all motor commands sent since last carriage return ("<cr>")
 void commitMoveMotorCommands (){
   Serial.println("<cr>");
 }
+
 
 void loop() {
   delay(1000);
